@@ -12,7 +12,7 @@
 <ul>
     <li><strong>Reconhecimento:</strong> Coleta de informações sobre o alvo.</li>
     <li><strong>Varredura:</strong> Identificação de serviços e vulnerabilidades.</li>
-    <li><strong>Ainda vai ter mais scripts, estou realizando a criação deles:</strong></li>
+    <li><strong>Ainda vai ter mais scripts, estou realizando a criação deles.</strong></li>
 </ul>
 
 <h2>Requisitos</h2>
