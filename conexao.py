@@ -1,38 +1,69 @@
 import socket
 import argparse
+import time
+import re
+
+# Cores para saída
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+CYAN = "\033[36m"
+RESET = "\033[0m"
+
+def mostrar_demo():
+    """Exibe uma demonstração do funcionamento do script antes da execução."""
+    print(f"\n{CYAN}=" * 50)
+    print("       🚀 CONEXÃO 🚀      ")
+    print("=" * 50 + f"{RESET}\n")
+    print("🔹 O script se conecta a um servidor na porta especificada e tenta autenticação.")
+    print("🔹 Ele envia um usuário e uma senha e exibe as respostas do servidor.\n")
+    print("🔹 Exemplo de uso:")
+    print(f"   ➤ python3 script.py 192.168.1.1 21 admin 12345\n")
+    print("🔹 Se as credenciais forem aceitas, a resposta do servidor será exibida.\n")
+    time.sleep(3)
+
+def validar_ip(ip):
+    """Valida um endereço IP IPv4."""
+    padrao_ip = re.compile(r"^(?:\d{1,3}\.){3}\d{1,3}$")
+    if padrao_ip.match(ip):
+        partes = ip.split(".")
+        return all(0 <= int(parte) <= 255 for parte in partes)
+    return False
 
 def conectar(ip, porta, usuario, senha):
+    """Conecta ao servidor e envia credenciais."""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as meu_socket:
-            meu_socket.settimeout(5)  # Definir timeout para evitar travamento
+            meu_socket.settimeout(5)  # Define timeout para evitar travamento
+            print(f"\n🔍 {CYAN}Conectando a {ip}:{porta}...{RESET}")
             meu_socket.connect((ip, porta))
 
             # Recebe e exibe o banner inicial
-            banner = meu_socket.recv(1024)
-            print(f"Banner recebido: {banner.decode()}")
+            banner = meu_socket.recv(1024).decode().strip()
+            print(f"{GREEN}[+] Banner recebido:{RESET} {banner}")
 
             # Envia o nome de usuário
-            print(f"Enviando usuário: {usuario}")
+            print(f"{CYAN}🔑 Enviando usuário: {usuario}{RESET}")
             meu_socket.sendall(f"USER {usuario}\r\n".encode())
-            resposta = meu_socket.recv(1024)
-            print(f"Resposta ao usuário: {resposta.decode()}")
+            resposta = meu_socket.recv(1024).decode().strip()
+            print(f"{YELLOW}[Resposta do servidor]{RESET} ➤ {resposta}")
 
             # Envia a senha
-            print(f"Enviando senha: {senha}")
+            print(f"{CYAN}🔑 Enviando senha: {senha}{RESET}")
             meu_socket.sendall(f"PASS {senha}\r\n".encode())
-            resposta = meu_socket.recv(1024)
-            print(f"Resposta à senha: {resposta.decode()}")
+            resposta = meu_socket.recv(1024).decode().strip()
+            print(f"{YELLOW}[Resposta do servidor]{RESET} ➤ {resposta}")
 
     except socket.timeout:
-        print("Tempo de conexão esgotado.")
+        print(f"{RED}Erro: Tempo de conexão esgotado.{RESET}")
     except ConnectionRefusedError:
-        print(f"Conexão recusada em {ip}:{porta}.")
+        print(f"{RED}Erro: Conexão recusada em {ip}:{porta}.{RESET}")
     except socket.gaierror:
-        print("Endereço IP inválido.")
+        print(f"{RED}Erro: Endereço IP inválido.{RESET}")
     except socket.error as e:
-        print(f"Erro de socket: {e}")
+        print(f"{RED}Erro de socket: {e}{RESET}")
     except KeyboardInterrupt:
-        print("\nExecução interrompida pelo usuário.")
+        print(f"\n{YELLOW}Execução interrompida pelo usuário.{RESET}")
 
 if __name__ == "__main__":
     # Usando argparse para receber IP, porta, usuário e senha via linha de comando
@@ -44,15 +75,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # Verifica se a porta é válida
-    if args.porta < 1 or args.porta > 65535:
-        print("Porta inválida! Escolha um número entre 1 e 65535.")
+    mostrar_demo()  # Exibir demonstração antes da execução
+
+    # Validação do IP
+    if not validar_ip(args.ip):
+        print(f"{RED}Erro: Endereço IP inválido!{RESET}")
+    elif args.porta < 1 or args.porta > 65535:
+        print(f"{RED}Erro: Porta inválida! Escolha um número entre 1 e 65535.{RESET}")
     else:
-        # Verifica se o IP é válido e tenta se conectar
-        try:
-            socket.gethostbyname(args.ip)
-            conectar(args.ip, args.porta, args.usuario, args.senha)
-        except socket.gaierror:
-            print("Endereço IP inválido.")
-        except KeyboardInterrupt:
-            print("\nExecução interrompida pelo usuário.")
+        conectar(args.ip, args.porta, args.usuario, args.senha)
