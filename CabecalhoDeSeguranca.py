@@ -20,7 +20,7 @@ security_headers = {
 
 def mostrar_demo():
     """Exibe uma demonstração do funcionamento do script antes da execução."""
-    print(f"\n{CYAN}=" * 50)
+    print("=" * 50 + f"{RESET}")
     print("       🚀 CABEÇALHO DE SEGURANÇA 🚀      ")
     print("=" * 50 + f"{RESET}\n")
     print("🔹 O script verifica a presença de cabeçalhos de segurança em um site.")
