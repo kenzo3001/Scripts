@@ -5,7 +5,6 @@ import argparse
 import time
 import re
 
-# Cores para saída
 RED = "\033[31m"
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
@@ -54,7 +53,6 @@ def query_whois_via_socket(address):
                 response += data
         response_decoded = response.decode("utf-8")
 
-        # Extrai o servidor WHOIS específico
         whois_server = None
         for line in response_decoded.splitlines():
             if line.lower().startswith("refer:" ):
@@ -67,7 +65,6 @@ def query_whois_via_socket(address):
 
         print(f"{GREEN}✅ Servidor WHOIS encontrado: {whois_server}{RESET}")
 
-        # Conexão com o servidor WHOIS específico
         print(f"{CYAN}🔍 Consultando WHOIS em {whois_server}...{RESET}")
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s1:
             s1.settimeout(5)
@@ -110,5 +107,5 @@ if __name__ == "__main__":
     parser.add_argument("address", type=str, help="Host, IPv4 ou IPv6 a ser consultado")
     args = parser.parse_args()
 
-    mostrar_demo()  # Exibir demonstração antes da execução
+    mostrar_demo()  
     query_whois(args.address)

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Exibe uma explicação antes da execução
 mostrar_demo() {
     echo "========================================="
     echo "          🌐 PARSING HTML 🌐            "
@@ -13,14 +12,13 @@ mostrar_demo() {
     sleep 3
 }
 
-# Verifica se o argumento foi fornecido
 if [ -z "$1" ]; then
     echo "❌ Erro: Nenhum domínio fornecido!"
     echo "Modo correto: $0 <site.com>"
     exit 1
 fi
 
-mostrar_demo  # Exibe a explicação antes de rodar
+mostrar_demo 
 
 SITE=$1
 

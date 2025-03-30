@@ -18,7 +18,7 @@ fi
 
 URL=$1
 
-mostrar_demo  # Mostra a demonstração antes da execução
+mostrar_demo  
 
 echo "🔎 Buscando servidores NS para $URL..."
 NS_OUTPUT=$(host -t ns "$URL" | awk '{print $NF}')

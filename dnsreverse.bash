@@ -21,7 +21,6 @@ BASE_IP=$1
 START_RANGE=$2
 END_RANGE=$3
 
-# Validação dos argumentos
 if ! [[ "$START_RANGE" =~ ^[0-9]+$ ]] || ! [[ "$END_RANGE" =~ ^[0-9]+$ ]]; then
     echo "❌ Erro: O intervalo deve ser um número inteiro válido."
     exit 1
@@ -32,7 +31,7 @@ if [ "$START_RANGE" -gt "$END_RANGE" ]; then
     exit 1
 fi
 
-mostrar_demo  # Mostra a demonstração antes da execução
+mostrar_demo  
 
 echo "🔎 Iniciando busca reversa de DNS em ${BASE_IP}.${START_RANGE} até ${BASE_IP}.${END_RANGE}..."
 echo "------------------------------------------"

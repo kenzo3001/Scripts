@@ -13,15 +13,15 @@ def mostrar_demo():
     print("   ➤ Porta: 22 (SSH)")
     print("   ➤ Resposta: OpenSSH 7.9p1 Debian-10+deb10u2\n")
     print("🔹 Se a porta estiver fechada ou protegida, a conexão falhará.\n")
-    time.sleep(3)  # Pequena pausa para leitura
+    time.sleep(3)  
 
 def obter_banner(ip, porta):
     """Tenta se conectar ao IP e porta especificados para capturar um banner."""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as meu_socket:
-            meu_socket.settimeout(5)  # Define um timeout de 5 segundos
+            meu_socket.settimeout(5)  
             meu_socket.connect((ip, porta))
-            banner = meu_socket.recv(4096)  # Recebe até 4 KB de dados
+            banner = meu_socket.recv(4096)  
             return banner.decode().strip()
     except socket.timeout:
         return "Erro: Conexão expirou (timeout)."

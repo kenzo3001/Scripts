@@ -3,7 +3,6 @@ import argparse
 import time
 import re
 
-# Cores para saída
 RED = "\033[31m"
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
@@ -34,15 +33,13 @@ def conectar(ip, porta, usuario, senha):
     """Conecta ao servidor e envia credenciais."""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as meu_socket:
-            meu_socket.settimeout(5)  # Define timeout para evitar travamento
+            meu_socket.settimeout(5)  
             print(f"\n🔍 {CYAN}Conectando a {ip}:{porta}...{RESET}")
             meu_socket.connect((ip, porta))
 
-            # Recebe e exibe o banner inicial
             banner = meu_socket.recv(1024).decode().strip()
             print(f"{GREEN}[+] Banner recebido:{RESET} {banner}")
 
-            # Envia o nome de usuário
             print(f"{CYAN}🔑 Enviando usuário: {usuario}{RESET}")
             meu_socket.sendall(f"USER {usuario}\r\n".encode())
             resposta = meu_socket.recv(1024).decode().strip()
@@ -66,7 +63,6 @@ def conectar(ip, porta, usuario, senha):
         print(f"\n{YELLOW}Execução interrompida pelo usuário.{RESET}")
 
 if __name__ == "__main__":
-    # Usando argparse para receber IP, porta, usuário e senha via linha de comando
     parser = argparse.ArgumentParser(description="Conectar a um servidor e enviar credenciais.")
     parser.add_argument("ip", help="Endereço IP do servidor")
     parser.add_argument("porta", type=int, help="Porta do servidor")
@@ -75,9 +71,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    mostrar_demo()  # Exibir demonstração antes da execução
-
-    # Validação do IP
+    mostrar_demo()  
     if not validar_ip(args.ip):
         print(f"{RED}Erro: Endereço IP inválido!{RESET}")
     elif args.porta < 1 or args.porta > 65535:

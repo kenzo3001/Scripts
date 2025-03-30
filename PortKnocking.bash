@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Função para exibir uma descrição antes da execução
 mostrar_demo() {
     echo "=============================================="
     echo "           🔐 Port Knocking 🔐               "
@@ -11,7 +10,6 @@ mostrar_demo() {
     sleep 2
 }
 
-# Função de port knocking
 port_knocking() {
     local ip="$1"
     local resultados=""
@@ -33,7 +31,6 @@ port_knocking() {
     echo -e "$resultados"
 }
 
-# Verificação de dependências
 if ! command -v hping3 &>/dev/null; then
     echo "❌ Erro: 'hping3' não encontrado. Instale com 'sudo apt install hping3'."
     exit 1
@@ -44,11 +41,9 @@ if ! command -v curl &>/dev/null; then
     exit 1
 fi
 
-# Variáveis iniciais
 alvo="172.16.1."
 portas=(13 37 30000 3000)
 
-# Início da execução
 mostrar_demo
 
 echo "Iniciando Port Knocking em $alvo"
@@ -57,7 +52,6 @@ echo "________________________________________________"
 printf "| \e[36m%-15s\e[0m| \e[36m%-15s\e[0m | \e[36m%-15s\e[0m |\n" "IP" "Porta" "Status"
 echo "________________________________________________"
 
-# Loop para rodar o port knocking para os IPs da rede alvo
 for i in {1..254}; do
     ip="$alvo$i"
     resultados=$(port_knocking "$ip")

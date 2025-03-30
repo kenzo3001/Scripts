@@ -12,25 +12,22 @@ function Mostrar-Demo {
     Start-Sleep -Seconds 3
 }
 
-# Verifica se o parâmetro foi fornecido
 if (!$p1) {
     Write-Host "❌ Uso: .\script.ps1 <rede_base>" -ForegroundColor Red
     Write-Host "Exemplo: .\script.ps1 192.168.1" -ForegroundColor Yellow
     exit
 }
 
-# Valida se o formato da rede está correto (ex: 192.168.1)
 if ($p1 -notmatch '^\d{1,3}\.\d{1,3}\.\d{1,3}$') {
     Write-Host "❌ Erro: Formato de rede inválido! Use algo como 192.168.1" -ForegroundColor Red
     exit
 }
 
-Mostrar-Demo  # Exibe a demonstração antes da execução
+Mostrar-Demo  
 
 Write-Host "🔍 Iniciando varredura em $p1.0/24..." -ForegroundColor Cyan
 Write-Host "--------------------------------------" -ForegroundColor Cyan
 
-# Varredura paralela
 $jobs = @()
 foreach ($ip in 1..254) {
     $jobs += Start-Job -ScriptBlock {
@@ -43,7 +40,6 @@ foreach ($ip in 1..254) {
     } -ArgumentList $p1, $ip
 }
 
-# Aguarda os jobs finalizarem e exibe os resultados
 $jobs | ForEach-Object { Receive-Job -Job $_ }
 $jobs | Remove-Job
 

@@ -56,10 +56,9 @@ if __name__ == "__main__":
     parser.add_argument("url", help="URL do site a ser verificado")
     args = parser.parse_args()
 
-    # Exibir demonstração antes da execução
+
     mostrar_demo()
 
-    # Garante que a URL tenha um esquema válido
     if not args.url.startswith(('http://', 'https://')):
         args.url = 'http://' + args.url
 

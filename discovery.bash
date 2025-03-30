@@ -18,25 +18,23 @@ mostrar_demo() {
     sleep 3
 }
 
-# Verifica se o usuário forneceu um argumento
 if [ -z "$1" ]; then
     echo -e "${VERMELHO}Modo de uso: $0 <rede_base>${RESET}"
     echo -e "Exemplo: $0 192.168.0"
     exit 1
 fi
 
-# Valida se a entrada parece um IP válido
 if ! [[ "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo -e "${VERMELHO}Erro: Formato de rede inválido! Use algo como 192.168.1${RESET}"
     exit 1
 fi
 
-mostrar_demo  # Mostra a demonstração antes da execução
+mostrar_demo  
 
 echo -e "${AZUL}🔍 Iniciando varredura em $1.0/24...${RESET}"
 echo -e "${AZUL}------------------------------------${RESET}"
 
-# Loop para escanear IPs de 1 a 254, executando em paralelo
+
 for host in {1..254}; do
     (
         ip="$1.$host"
@@ -46,7 +44,6 @@ for host in {1..254}; do
     ) &
 done
 
-# Aguarda todas as execuções em paralelo terminarem
 wait
 
 echo -e "${AZUL}✅ Varredura concluída.${RESET}"

@@ -10,14 +10,11 @@ function mostrar_demo {
     Start-Sleep -Seconds 3
 }
 
-# Exibir a explicação antes da execução
 mostrar_demo
 
-# Solicita a URL ao usuário
 $site = Read-Host "Digite a URL completa (ex: http://site.com)"
 
 try {
-    # Tenta obter os headers do servidor com o método OPTIONS
     $web = Invoke-WebRequest -Uri "$site" -Method Options -ErrorAction Stop
 
     Write-Host "============================================" -ForegroundColor Cyan
@@ -39,5 +36,4 @@ try {
     Write-Host "============================================" -ForegroundColor Cyan
     Write-Host " 🔗 Links encontrados na página: " -ForegroundColor Green
 
-    # Tenta obter os links da página pri
 }

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Exibe uma explicação antes da execução
 mostrar_demo() {
     echo "=============================================="
     echo "              🔍 METADADOS 🔍"
@@ -13,7 +12,6 @@ mostrar_demo() {
     sleep 3
 }
 
-# Verifica se os argumentos foram fornecidos
 if [ "$#" -ne 2 ]; then
     echo "❌ Uso incorreto!"
     echo "Modo correto: $0 <site> <extensão>"
@@ -21,11 +19,11 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
-mostrar_demo  # Mostra a explicação antes de rodar o script
+mostrar_demo  
 
-VARIAVEL1=$1  # Site alvo
-VARIAVEL2=$2  # Extensão do arquivo
-TEMP_FILE=$(mktemp)  # Arquivo temporário para salvar URLs
+VARIAVEL1=$1  
+VARIAVEL2=$2  
+TEMP_FILE=$(mktemp) 
 
 echo "🔍 Buscando arquivos .$VARIAVEL2 em $VARIAVEL1..."
 lynx --dump "https://google.com/search?&q=site:$VARIAVEL1+ext:$VARIAVEL2" \
@@ -40,7 +38,7 @@ fi
 
 echo "✅ URLs extraídas e salvas em $TEMP_FILE."
 
-DOWNLOAD_DIR=$(mktemp -d)  # Diretório temporário para downloads
+DOWNLOAD_DIR=$(mktemp -d)  
 echo "📂 Baixando arquivos para $DOWNLOAD_DIR..."
 
 while IFS= read -r URL; do
