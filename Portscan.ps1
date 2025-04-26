@@ -1,18 +1,15 @@
 param(
-    [string]$ip
+    [Parameter(Mandatory=$true)]
+    [string]$ip,
+
+    [Parameter(Mandatory=$false)]
+    [int[]]$ports = @(21, 22, 25, 80, 443, 3306, 445)
 )
 
-if (-not $ip) {
-    Write-Host "Modo de uso: .\portscan.ps1 <IP>"
-    exit
-}
+Write-Host "`nIniciando varredura em $ip ..." -ForegroundColor Cyan
 
-# Lista das portas mais comuns a serem verificadas
-$topPorts = @(21, 22, 25, 80, 443, 3306, 445)
-
-try {
-    foreach ($porta in $topPorts) {
-        # Testa a conexão na porta específica
+foreach ($porta in $ports) {
+    try {
         $isPortOpen = Test-NetConnection -ComputerName $ip -Port $porta -WarningAction SilentlyContinue -InformationLevel Quiet
 
         if ($isPortOpen) {
@@ -20,7 +17,9 @@ try {
         } else {
             Write-Host "Porta $porta: Fechada" -ForegroundColor Red
         }
+    } catch {
+        Write-Host "Erro ao testar a porta $porta. Verifique IP ou conexão." -ForegroundColor Yellow
     }
-} catch {
-    Write-Host "Ocorreu um erro ao tentar verificar as portas. Verifique o endereço IP ou sua conexão de rede." -ForegroundColor Yellow
 }
+
+Write-Host "`n✅ Scan finalizado." -ForegroundColor Cyan
