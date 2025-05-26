@@ -1,23 +1,34 @@
 #include <stdio.h>
-#include <sys/soket.h>
-#include <netdb.h>
-int main (void){
-		int meuSoket;
-		int conecta;
-		
-		struct sokaddr_in alvo;
-		
-		meuSocket = soket(AF_INET, SOCK_STREAM, 0);
-		alvo.sin_damily = AF_INET;
-		alvo.sin_port=htons(80);
-		alvo.sin_addr.s_addr = inet_addr("192.162.0.1")
-		
-		conecta = conect(meuSocket, (struct sockddr *) &alvo, sizeof alvo));
-		if(conecta == 0){
-				printf("Porta aberta \n")
-				close(meusocket);
-				close(conecta)
-		} else{
-			printf("Porta Fechada \n")
-		}
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+
+int main(void) {
+    int meuSocket;
+    int conecta;
+
+    struct sockaddr_in alvo;
+
+    meuSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (meuSocket < 0) {
+        perror("Erro ao criar socket");
+        return 1;
+    }
+
+    alvo.sin_family = AF_INET;
+    alvo.sin_port = htons(80);
+    alvo.sin_addr.s_addr = inet_addr("192.168.0.1"); 
+
+    conecta = connect(meuSocket, (struct sockaddr *)&alvo, sizeof(alvo));
+    if (conecta == 0) {
+        printf("✅ Porta 80 aberta!\n");
+        close(meuSocket);
+    } else {
+        printf("❌ Porta 80 fechada ou host inacessível.\n");
+    }
+
+    return 0;
 }
