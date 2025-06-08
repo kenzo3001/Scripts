@@ -18,8 +18,26 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-mostrar_demo 
+SITE="$1"
 
-SITE=$1
+mostrar_demo
 
-echo "🔍 Extraindo domínios do site $SI
+echo "🔍 Baixando HTML de $SITE..."
+HTML=$(curl -sL "$SITE")
+
+DOMINIOS=$(echo "$HTML" | grep -Eo "https?://[^/\"']+" | sed -E 's#https?://##' | cut -d/ -f1 | sort -u)
+
+if [ -z "$DOMINIOS" ]; then
+    echo "❌ Nenhum domínio encontrado no HTML."
+    exit 1
+fi
+
+echo "🌐 Domínios encontrados:" 
+for d in $DOMINIOS; do
+    IP=$(dig +short "$d" | head -n 1)
+    if [ -n "$IP" ]; then
+        echo "   $d -> $IP"
+    else
+        echo "   $d -> IP não encontrado"
+    fi
+done
