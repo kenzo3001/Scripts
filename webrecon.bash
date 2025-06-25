@@ -114,7 +114,6 @@ processar_palavra() {
 
 export -f processar_palavra verificar_url log_acao
 
-# Executa em paralelo, passando URL_BASE e EXTENSAO como argumento
 cat "$ARQUIVO_LISTA" | xargs -I{} -P 10 bash -c 'processar_palavra "$1" "$2" "$3"' _ {} "$URL_BASE" "$EXTENSAO"
 
 log_acao "Varredura concluída." "INFO" "N/A"
